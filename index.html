@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>My House Adventure!</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#4a3b6b;--pink:#ff7eb6;--blue:#59b8ff;--green:#5fd38d;--yellow:#ffd23f;--purple:#a78bfa}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:'Baloo 2','Comic Sans MS','Chalkboard SE','Trebuchet MS',sans-serif;color:var(--ink);font-size:clamp(18px,2.4vw,24px);
+background:radial-gradient(circle at 10% 10%,#fff6c9 0,transparent 35%),radial-gradient(circle at 90% 20%,#ffd9ec 0,transparent 40%),radial-gradient(circle at 50% 100%,#c9f1ff 0,transparent 50%),linear-gradient(160deg,#e9e2ff,#d8f5ff 55%,#fff0d6);background-attachment:fixed;overflow-x:hidden}
+.deco{position:fixed;font-size:clamp(28px,5vw,60px);opacity:.55;pointer-events:none;animation:fl 7s ease-in-out infinite;z-index:0}
+@keyframes fl{50%{transform:translateY(-18px) rotate(6deg)}}
+#app{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:14px}
+button,.up{font:inherit;cursor:pointer}
+.btn{border:0;border-radius:999px;padding:.6em 1.3em;font-weight:800;color:#fff;background:linear-gradient(180deg,#ff9ccb,var(--pink));box-shadow:0 6px 0 #d9548f,0 10px 18px #0002;transition:transform .15s;min-height:52px}
+.btn:hover{transform:translateY(-2px)}.btn:active{transform:translateY(4px);box-shadow:0 2px 0 #d9548f}
+.btn.b{background:linear-gradient(180deg,#8ad0ff,var(--blue));box-shadow:0 6px 0 #2f8fd6,0 10px 18px #0002}
+.btn.g{background:linear-gradient(180deg,#8be8ae,var(--green));box-shadow:0 6px 0 #2e9d5c,0 10px 18px #0002}
+.btn.y{background:linear-gradient(180deg,#ffe27a,var(--yellow));color:var(--ink);box-shadow:0 6px 0 #d9a800,0 10px 18px #0002}
+.btn.p{background:linear-gradient(180deg,#c5b3ff,var(--purple));box-shadow:0 6px 0 #7653d6,0 10px 18px #0002}
+.btn[disabled]{opacity:.45;cursor:not-allowed;transform:none}
+.btn.sm{font-size:.7em;min-height:40px;padding:.35em 1em}
+:focus-visible{outline:4px solid #333;outline-offset:3px}
+.hero-home{text-align:center;padding:2vh 0}
+.hero-home h1{font-size:clamp(34px,7vw,76px);margin:.1em 0;line-height:1;background:linear-gradient(90deg,#ff5fa2,#ff9f43,#ffd23f,#5fd38d,#59b8ff,#a78bfa);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 3px 0 #fff)}
+.hero-home p{font-size:1.3em;font-weight:700;margin:.2em 0 .6em}
+.hero-home svg{width:min(480px,86%);height:auto;animation:fl 5s ease-in-out infinite}
+.big{font-size:1.3em;padding:.5em 1.6em;animation:pulse 1.8s infinite}
+@keyframes pulse{50%{transform:scale(1.06)}}
+.top{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:10px}
+.pill{background:#fff;border-radius:999px;padding:.2em .9em;font-weight:800;box-shadow:0 4px 10px #0002}
+h2.t{margin:.2em 0;font-size:1.5em;text-align:center}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
+.card{background:var(--c,#fff);border-radius:28px;padding:12px;box-shadow:0 8px 20px #0002;border:5px solid #fff;display:flex;flex-direction:column;gap:8px;transition:transform .2s}
+.card:hover{transform:translateY(-4px) rotate(-.6deg)}
+.card h3{margin:0;text-align:center;font-size:1.3em}
+.pic{border-radius:20px;overflow:hidden;background:#fff8;aspect-ratio:4/3;display:flex}
+.pic img{width:100%;height:100%;object-fit:contain;background:#fffc}
+.ph{width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:0}
+.ph span{font-size:clamp(50px,9vw,90px);line-height:1.1}.ph small{opacity:.7;font-size:.6em}
+.bar{height:16px;background:#fff9;border-radius:99px;overflow:hidden;border:2px solid #fff}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,#ffd23f,#5fd38d);border-radius:99px;transition:width .5s}
+.small{font-size:.7em;text-align:center;font-weight:700}
+.up{display:inline-block;text-align:center;background:#fff;border-radius:99px;padding:.15em .9em;font-size:.65em;font-weight:800;border:2px dashed var(--purple);position:relative}
+.up input{position:absolute;opacity:0;inset:0;width:100%;height:100%;cursor:pointer}
+.up:focus-within{outline:4px solid #333}
+.done{position:relative}.done::after{content:'✅';position:absolute;top:-8px;right:-4px;font-size:1.6em}
+.stage{background:var(--c,#fff);border:5px solid #fff;border-radius:30px;padding:12px;box-shadow:0 8px 24px #0002}
+.stage .pic{aspect-ratio:auto;height:clamp(180px,38vh,380px)}
+.q{background:#fff;border-radius:24px;padding:16px;margin-top:12px;text-align:center}
+.q.slide{animation:sl .45s ease}
+@keyframes sl{from{opacity:0;transform:translateX(60px)}}
+.tag{display:inline-block;background:var(--purple);color:#fff;border-radius:99px;padding:.1em .9em;font-weight:800;font-size:.75em}
+.tag.k{background:var(--blue)}.tag.m{background:var(--pink)}.tag.c{background:var(--green)}
+.qt{font-size:clamp(24px,4.2vw,42px);font-weight:800;margin:.3em 0}
+.blank{display:inline-block;min-width:3.2em;border-bottom:5px dashed var(--pink);color:var(--green);padding:0 .2em}
+.opts{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:12px 0}
+.opt{font-size:1.25em;min-width:150px;padding:.6em 1.2em;border-radius:22px;border:4px solid #fff;background:linear-gradient(180deg,#fff,#eef);box-shadow:0 5px 0 #b9aee6,0 8px 14px #0002;font-weight:800;color:var(--ink);min-height:64px}
+.opt:hover:not([disabled]){background:#fff6c9}
+.opt.ok{background:linear-gradient(180deg,#b8f5cf,#6fdc9b);box-shadow:0 5px 0 #2e9d5c}
+.opt.no{animation:sh .4s;background:#ffd6d6}
+.opt.hint{outline:4px dotted var(--green)}
+@keyframes sh{25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}
+.fb{min-height:1.6em;font-size:1.5em;font-weight:800}.fb.ok{color:#1f9d55;animation:pulse .6s}.fb.no{color:#e0592a}
+.help{background:#fffbe0;border:3px dashed var(--yellow);border-radius:18px;padding:.4em 1em;margin:8px auto;max-width:640px;font-weight:700}
+.ex{background:#e6ffef;border-color:var(--green)}
+.teach{background:#f3f0ff;border:3px dashed var(--purple);border-radius:18px;padding:10px;margin-top:10px;font-size:.7em;text-align:left}
+.teach input,.teach select{font:inherit;width:100%;padding:.3em;border-radius:10px;border:2px solid var(--purple)}
+.nav{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:14px}
+.stars{font-size:clamp(40px,9vw,90px)}
+.finish{text-align:center;padding:5vh 0}
+.finish h1{font-size:clamp(34px,7vw,70px);margin:.2em 0;color:#ff5fa2;text-shadow:0 4px 0 #fff}
+.confetti{position:fixed;top:-40px;font-size:30px;pointer-events:none;z-index:99;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(540deg)}}
+details{font-size:.6em;max-width:640px;margin:20px auto;background:#fff9;border-radius:14px;padding:6px 12px;text-align:left}
+.toast{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);background:#333;color:#fff;border-radius:99px;padding:.4em 1.2em;font-size:.7em;z-index:100}
+@media(max-width:600px){.opt{min-width:120px;flex:1 1 40%}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<span class="deco" style="top:6%;left:4%">☁️</span><span class="deco" style="top:12%;right:6%;animation-delay:1s">⭐</span>
+<span class="deco" style="top:55%;left:2%;animation-delay:2s">🌈</span><span class="deco" style="bottom:8%;right:4%;animation-delay:3s">🏠</span>
+<span class="deco" style="top:35%;right:2%;animation-delay:1.5s">☁️</span><span class="deco" style="bottom:6%;left:8%;animation-delay:.5s">✨</span>
+<main id="app"></main>
+
+<script>
+/* ===== EDIT QUESTIONS HERE =====
+ O(question, exampleAnswer, hint, adapt)  -> open question (adapt=1: teacher should adjust answer to picture)
+ M(question, [options], correctIndex, isLocation) -> multiple choice
+ C(sentence with ___, [words], correctIndex)       -> complete the sentence
+ For "Upstairs/Downstairs" questions (isLocation=1) you can change the correct answer in TEACHER MODE. */
+const O=(q,ex,h,ad)=>({t:'o',q,ex,h:h||'I can see a…',ad}),
+      M=(q,o,a,loc)=>({t:'m',q,o,a,loc}),
+      C=(q,o,a)=>({t:'c',q,o,a});
+const IE=['is','are'];
+const ROOMS=[
+{id:'kitchen',name:'Kitchen',e:'🍳',c:'#ffd8a8',qs:[
+ O('What can you see in the kitchen?','I can see a fridge and a stove.'),
+ M('What keeps food cold?',['Fridge','Sofa','Bed'],0),
+ C('There ___ a stove in the kitchen.',IE,0),
+ O('How many chairs are there?','There are four chairs.','There are … chairs.',1),
+ M('Where is the kitchen?',['Upstairs','Downstairs'],1,1)]},
+{id:'living',name:'Living Room',e:'🛋️',c:'#b8e6c1',qs:[
+ O('What can you see in the living room?','I can see a sofa and a TV.'),
+ M('What do you sit on?',['Sofa','Fridge','Bathtub'],0),
+ C('There ___ a TV in the living room.',IE,0),
+ O('What color is the sofa?','The sofa is blue.','The sofa is …',1),
+ C('There ___ two cushions on the sofa.',IE,1)]},
+{id:'bedroom',name:'Bedroom',e:'🛏️',c:'#d7c4f5',qs:[
+ O('What can you see in the bedroom?','I can see a bed and a wardrobe.'),
+ M('Where do you sleep?',['Bed','Sink','Stove'],0),
+ C('There ___ a bed in the bedroom.',IE,0),
+ O('How many pillows are there?','There are two pillows.','There are … pillows.',1),
+ M('Where is the bedroom?',['Upstairs','Downstairs'],0,1)]},
+{id:'bathroom',name:'Bathroom',e:'🛁',c:'#b5e3f7',qs:[
+ O('What can you see in the bathroom?','I can see a toilet and a sink.'),
+ M('What do you use to brush your teeth?',['Toothbrush','Pillow','Plate'],0),
+ C('There ___ a bathtub in the bathroom.',IE,0),
+ O('What do you do in the bathroom?','I brush my teeth.','I …'),
+ C('The towel is ___ the bathroom.',['in','on','under'],0)]},
+{id:'study',name:'Study / Office',e:'💻',c:'#fff3a8',qs:[
+ O('What can you see in the study?','I can see a desk and a computer.'),
+ M('What do you use to type on a computer?',['Keyboard','Pillow','Bathtub'],0),
+ C('There ___ a computer on the desk.',IE,0),
+ O('How many books are there?','There are five books.','There are … books.',1),
+ C('There ___ books on the bookshelf.',IE,1)]},
+{id:'dining',name:'Dining Room',e:'🍽️',c:'#ffc2d6',qs:[
+ O('What can you see in the dining room?','I can see a table and chairs.'),
+ M('Where do you eat dinner?',['Dining room','Bathroom','Study'],0),
+ C('There ___ a table in the dining room.',IE,0),
+ O('How many chairs are there?','There are four chairs.','There are … chairs.',1),
+ M('Where is the dining room?',['Upstairs','Downstairs'],1,1)]},
+{id:'laundry',name:'Laundry Room',e:'🧺',c:'#bff0e6',qs:[
+ O('What can you see in the laundry room?','I can see a washing machine and a basket.'),
+ M('What do you use to wash clothes?',['Washing machine','TV','Bed'],0),
+ C('There ___ a washing machine.',IE,0),
+ O('What color are the towels?','The towels are white.','The towels are …',1),
+ C('There ___ clothes in the basket.',IE,1)]},
+{id:'hall',name:'Hallway & Stairs',e:'🪜',c:'#ffd0b0',qs:[
+ O('What can you see in the hallway?','I can see stairs and a plant.'),
+ M('Where do the stairs lead?',['Upstairs','Inside the refrigerator','In the bed'],0),
+ C('There ___ a plant in the hallway.',IE,0),
+ C('The bedroom is ___.',['upstairs','refrigerator'],0),
+ O('What can you find upstairs?','There are two bedrooms upstairs.','There are … upstairs.')]},
+{id:'house',name:'Whole House',e:'🏡',c:'#f9c6f0',qs:[
+ O('What rooms can you see?','I can see a kitchen and two bedrooms.','I can see a…'),
+ M('Where is the kitchen?',['Downstairs','Upstairs'],0,1),
+ C('There ___ two bedrooms upstairs.',IE,1),
+ C('There ___ a sofa downstairs.',IE,0),
+ O('Can you describe the house using There is or There are?','There is a kitchen downstairs and there are two bedrooms upstairs.','There is a… / There are…')]}
+];
+
+/* ===== IMAGES: file names (same folder as this HTML; case-sensitive on GitHub!) ===== */
+const IMG_DIR='';
+const IMGS={
+  kitchen:'kitchen.PNG',
+  living:'living room.PNG',
+  bedroom:'bedroom.PNG',
+  bathroom:'bath.PNG',
+  study:'studio.PNG',
+  dining:'dinig.PNG',
+  laundry:'laudry.PNG',
+  hall:'updown.PNG',
+  house:'two.PNG'
+};
+
+/* ===== STORAGE (safe: never crashes if unavailable) ===== */
+let store={imgs:{},prog:{},edits:{}};
+const ls={get(k){try{return localStorage.getItem(k)}catch(e){return null}},
+ set(k,v){try{localStorage.setItem(k,v);return true}catch(e){return false}}};
+try{const s=JSON.parse(ls.get('mha')||'{}');store.prog=s.prog||{};store.edits=s.edits||{}}catch(e){}
+const save=()=>ls.set('mha',JSON.stringify({prog:store.prog,edits:store.edits}));
+
+/* ===== STATE & HELPERS ===== */
+const S={view:'home',rid:null,i:0,teacher:false,hint:false,ex:false,fb:'',pk:null,anim:false};
+const app=document.getElementById('app');
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const cur=()=>ROOMS.find(r=>r.id===S.rid);
+const prog=r=>store.prog[r.id]||(store.prog[r.id]={d:[0,0,0,0,0],s:[0,0,0,0,0]});
+const cnt=r=>prog(r).d.filter(Boolean).length;
+const stars=()=>ROOMS.reduce((n,r)=>n+prog(r).s.filter(Boolean).length,0);
+const correct=(r,i)=>{const e=store.edits[r.id+'.'+i+'a'];return e!==undefined?+e:r.qs[i].a};
+const example=(r,i)=>{const e=store.edits[r.id+'.'+i+'x'];return e!==undefined?e:r.qs[i].ex};
+const say=t=>{try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=.85;speechSynthesis.speak(u)}catch(e){}};
+function toast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),3500)}
+function boom(n=36){if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+ const em=['⭐','🎉','✨','🌈','💖','🎈','🌟'];
+ for(let i=0;i<n;i++){const s=document.createElement('span');s.className='confetti';s.textContent=em[i%em.length];
+  s.style.left=Math.random()*100+'vw';s.style.animationDuration=(1.6+Math.random()*1.6)+'s';s.style.fontSize=(20+Math.random()*26)+'px';
+  document.body.appendChild(s);setTimeout(()=>s.remove(),3500)}}
+
+/* ===== IMAGES ===== */
+const pic=r=>`<div class="pic" style="position:relative">
+ <div class="ph" style="background:linear-gradient(135deg,${r.c},#fff)" role="img" aria-label="${esc(r.name)} placeholder"><span>${r.e}</span><b>${esc(r.name)}</b></div>
+ ${IMGS[r.id]?`<img src="${IMG_DIR+encodeURIComponent(IMGS[r.id])}" alt="${esc(r.name)}" style="position:absolute;inset:0" onerror="this.remove()">`:''}</div>`;
+
+/* ===== NAVIGATION ===== */
+function go(v){S.view=v;S.anim=true;render();window.scrollTo(0,0)}
+function openRoom(id,restart){S.rid=id;const r=cur();
+ if(restart||cnt(r)===5){store.prog[id]={d:[0,0,0,0,0],s:[0,0,0,0,0]};save()}
+ const p=prog(r);S.i=Math.max(0,p.d.findIndex(x=>!x));resetQ();go('room')}
+function resetQ(){S.hint=S.ex=false;S.fb='';S.pk=null;S.anim=true}
+function next(){const r=cur();if(S.i<4){S.i++;resetQ();render()}else{go('finish');boom(60)}}
+function back(){if(S.i>0){S.i--;resetQ();render()}else go('gallery')}
+function skip(){const p=prog(cur());p.d[S.i]=1;save();next()}
+function done(){const r=cur(),p=prog(r);p.d[S.i]=1;p.s[S.i]=1;save();S.fb='ok';boom(24);render()}
+function pick(k){const r=cur(),p=prog(r);if(p.d[S.i])return;
+ if(k===correct(r,S.i)){p.d[S.i]=1;p.s[S.i]=1;save();S.fb='ok';S.pk=k;boom(30)}else{S.fb='no';S.pk=k}
+ render()}
+function setX(v){store.edits[S.rid+'.'+S.i+'x']=v;save()}
+function setA(v){store.edits[S.rid+'.'+S.i+'a']=v;save();render()}
+function speakQ(){const q=cur().qs[S.i];say(q.q.replace('___','blank'))}
+
+/* ===== VIEWS ===== */
+const HOUSE=`<svg viewBox="0 0 420 330" role="img" aria-label="A colorful two-story house"><path d="M30 230a180 180 0 0 1 360 0" fill="none" stroke="#ff7eb6" stroke-width="14"/><path d="M48 230a162 162 0 0 1 324 0" fill="none" stroke="#ffd23f" stroke-width="14"/><path d="M66 230a144 144 0 0 1 288 0" fill="none" stroke="#5fd38d" stroke-width="14"/><path d="M84 230a126 126 0 0 1 252 0" fill="none" stroke="#59b8ff" stroke-width="14"/>
+<ellipse cx="60" cy="250" rx="55" ry="24" fill="#fff"/><ellipse cx="365" cy="250" rx="55" ry="24" fill="#fff"/>
+<rect x="105" y="90" width="210" height="205" rx="14" fill="#ffe3a8" stroke="#fff" stroke-width="6"/><rect x="105" y="190" width="210" height="8" fill="#ffb86b"/>
+<rect x="250" y="40" width="28" height="55" fill="#ff8a8a"/><path d="M85 100 210 20 335 100Z" fill="#ff7eb6" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<rect x="130" y="115" width="55" height="55" rx="10" fill="#a8e1ff" stroke="#fff" stroke-width="5"/><rect x="235" y="115" width="55" height="55" rx="10" fill="#a8e1ff" stroke="#fff" stroke-width="5"/>
+<rect x="130" y="215" width="55" height="50" rx="10" fill="#a8e1ff" stroke="#fff" stroke-width="5"/><rect x="215" y="215" width="70" height="80" rx="12" fill="#a78bfa" stroke="#fff" stroke-width="5"/><circle cx="270" cy="258" r="6" fill="#ffd23f"/>
+<path d="M105 295h210" stroke="#5fd38d" stroke-width="14" stroke-linecap="round"/><text x="195" y="60" font-size="34">⭐</text><text x="335" y="70" font-size="34">☁️</text></svg>`;
+
+function home(){return `<section class="hero-home"><div style="font-size:2em">🌈 ⭐ 🏠 ⭐ 🌈</div>${HOUSE}
+<h1>🏡 MY HOUSE ADVENTURE!</h1><p>Let's explore the rooms of the house!</p>
+<button class="btn big" onclick="go('gallery')">LET'S EXPLORE! 🚀</button>
+</section>`}
+
+function gallery(){const done=ROOMS.filter(r=>cnt(r)===5).length;
+ return `<div class="top"><button class="btn b sm" onclick="go('home')">🏠 HOME</button><span class="pill">⭐ ${stars()} stars</span><span class="pill">✅ ${done} / ${ROOMS.length} rooms</span></div>
+<h2 class="t">Choose a room! 🔑</h2><div class="grid">${ROOMS.map(r=>{const n=cnt(r);return `<article class="card ${n===5?'done':''}" style="--c:${r.c}">${pic(r)}<h3>${r.e} ${esc(r.name)}</h3>
+<div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="5" aria-valuenow="${n}"><i style="width:${n*20}%"></i></div><div class="small">${n} / 5 questions</div>
+<button class="btn g" onclick="openRoom('${r.id}')">LET'S PLAY!</button></article>`}).join('')}</div>`}
+
+function room(){const r=cur(),q=r.qs[S.i],p=prog(r),ans=!!p.d[S.i],T=S.teacher,ca=correct(r,S.i);
+ const kind={o:['OPEN QUESTION','k'],m:['MULTIPLE CHOICE','m'],c:['COMPLETE THE SENTENCE','c']}[q.t];
+ let body='';
+ if(q.t==='o'){
+  body=`<div class="qt">${esc(q.q)}</div><div class="opts">
+  <button class="btn y sm" onclick="S.hint=!S.hint;render()">💡 HELP</button>
+  <button class="btn b sm" onclick="S.ex=!S.ex;render()">SHOW EXAMPLE ANSWER</button></div>
+  ${S.hint?`<div class="help">💡 ${esc(q.h)}</div>`:''}${S.ex?`<div class="help ex">✅ ${esc(example(r,S.i))}</div>`:''}
+  ${ans?'':`<button class="btn g" onclick="done()">✅ I ANSWERED!</button>`}${ans&&S.fb==='ok'?`<div class="fb ok">GREAT JOB! ⭐</div>`:''}`;
+ }else{
+  const filled=ans&&q.t==='c'?`<span class="blank">${esc(q.o[ca])}</span>`:`<span class="blank">&nbsp;&nbsp;&nbsp;</span>`;
+  const text=q.t==='c'?esc(q.q).replace('___',filled):esc(q.q);
+  body=`<div class="qt">${text}</div><div class="opts" role="group" aria-label="Answers">${q.o.map((o,k)=>{
+   let c='opt';if(ans&&k===ca)c+=' ok';else if(S.fb==='no'&&S.pk===k)c+=' no';else if(T&&k===ca)c+=' hint';
+   return `<button class="${c}" ${ans?'disabled':''} onclick="pick(${k})">${esc(o)}</button>`}).join('')}</div>
+  <div class="fb ${S.fb}" aria-live="polite">${S.fb==='ok'?'GREAT JOB! ⭐':S.fb==='no'?'TRY AGAIN! 💪':''}</div>`;
+ }
+ let teach='';
+ if(T){teach=`<div class="teach"><b>👩‍🏫 TEACHER MODE</b><br>`;
+  if(q.t==='o'){teach+=`Hint: ${esc(q.h)}<br><label>Example answer (editable):<input value="${esc(example(r,S.i))}" oninput="setX(this.value)"></label>${q.ad?'<br>📝 Adapt the answer to the picture you uploaded.':''}`}
+  else{teach+=`Correct answer: <b>${esc(q.o[ca])}</b>`;
+   if(q.loc)teach+=`<br><label>Change correct answer (match your picture):<select onchange="setA(this.value)">${q.o.map((o,k)=>`<option value="${k}" ${k===ca?'selected':''}>${esc(o)}</option>`).join('')}</select></label>`}
+  teach+='</div>'}
+ return `<div class="top"><button class="btn b sm" onclick="go('home')">🏠 HOME</button><span class="pill">${r.e} ${esc(r.name)}</span><span class="pill">⭐ ${stars()}</span>
+<button class="btn p sm" onclick="go('gallery')">🚪 ROOMS</button></div>
+<div class="stage" style="--c:${r.c}">${pic(r)}
+<div class="bar" style="margin-top:10px" role="progressbar" aria-valuemin="0" aria-valuemax="5" aria-valuenow="${cnt(r)}"><i style="width:${cnt(r)*20}%"></i></div>
+<div class="q ${S.anim?'slide':''}"><span class="tag">QUESTION ${S.i+1} OF 5</span> <span class="tag ${kind[1]}">${kind[0]}</span>${body}${teach}</div>
+<div class="nav"><button class="btn b" onclick="back()">← BACK</button><button class="btn y" onclick="speakQ()">🔊 READ QUESTION</button>
+<button class="btn g" ${ans?'':'disabled'} onclick="next()">${S.i<4?'NEXT QUESTION →':'FINISH 🎉'}</button></div>
+<div class="nav"><button class="btn sm ${T?'p':'b'}" onclick="S.teacher=!S.teacher;render()" aria-pressed="${T}">TEACHER MODE ${T?'ON':'OFF'}</button>${T&&!ans?`<button class="btn sm y" onclick="skip()">SKIP ⏭</button>`:''}</div></div>`}
+
+function finish(){const r=cur(),n=prog(r).s.filter(Boolean).length;
+ return `<section class="finish"><div class="stars">${'⭐'.repeat(Math.max(n,1))}</div><h1>AMAZING JOB, EXPLORER! 🎉</h1>
+<p style="font-size:1.3em;font-weight:700">${r.e} ${esc(r.name)} complete! You won ${n} ${n===1?'star':'stars'}!</p>
+<div class="nav"><button class="btn g" onclick="openRoom('${r.id}',true)">🔁 PLAY AGAIN</button><button class="btn b" onclick="go('gallery')">🏘️ MORE ROOMS</button><button class="btn p" onclick="go('home')">🏠 HOME</button></div></section>`}
+
+function render(){app.innerHTML={home,gallery,room,finish}[S.view]();S.anim=false;
+ if(S.view==='room'||S.view==='gallery'){/* keep focus usable */}}
+render();
+</script>
+</body>
+</html>
